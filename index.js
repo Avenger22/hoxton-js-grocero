@@ -10,6 +10,8 @@ This is how an item object should look like
 
 */
 
+let totalEl = document.querySelector('span.total-number')
+
 const state = {
 
   items: [
@@ -158,7 +160,7 @@ function renderCardItem(cardImgParam) {
       removeCardItem()
     }
 
-    // calculateTotal(numberSpan)
+    calculateTotal(numberSpan, cardImgParam)
 
   })
 
@@ -174,7 +176,7 @@ function renderCardItem(cardImgParam) {
       removeCardItem()
     }
 
-    // calculateTotal(numberspan)
+    calculateTotal(numberSpan, cardImgParam)
 
   })
 
@@ -215,6 +217,7 @@ function renderStoreItem(imgParam) {
     imgParam.inCard = true
     if (imgParam.inCard === true) {
       renderCardItem(imgParam)
+      calculateTotal(1, imgParam)
     }
 
   })
@@ -230,7 +233,13 @@ function removeCardItem() {
 
 }
 
-function calculateTotal(totalParam) {
+function calculateTotal(changeParam, itemsParam) {
+
+  let price = itemsParam.price
+  let change = changeParam
+  let totalPrice = price
+  totalPrice = totalPrice + price
+  totalEl.textContent = `£${totalPrice}`
 
 }
 
