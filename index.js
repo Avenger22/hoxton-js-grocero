@@ -11,6 +11,7 @@ This is how an item object should look like
 */
 
 let totalEl = document.querySelector('span.total-number')
+let totalPrice = 0
 
 const state = {
 
@@ -237,9 +238,8 @@ function calculateTotal(changeParam, itemsParam) {
 
   let price = itemsParam.price
   let change = changeParam
-  let totalPrice = price
   totalPrice = totalPrice + price
-  totalEl.textContent = `£${totalPrice}`
+  totalEl.textContent = `£${totalPrice.toFixed(2)}`
 
 }
 
