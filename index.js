@@ -91,19 +91,6 @@ const state = {
  
 }
 
-// const imgSvg = [
-//   '001-beetroot.svg',
-//   '002-carrot.svg',
-//   '003-apple.svg',
-//   '004-apricot.svg',
-//   '005-avocado.svg',
-//   '006-bananas.svg',
-//   '007-bell-pepper.svg',
-//   '008-berry.svg',
-//   '009-blueberry.svg',
-//   '010-eggplant.svg',
-// ]
-
 function renderStoreSvg(itemsParam) {
 
   for (const element of itemsParam) {
@@ -158,10 +145,10 @@ function renderCardItem(cardImgParam) {
     spanEl.textContent = numberSpan
 
     if (numberSpan === 0) {
-      removeCardItem()
+      liEl.remove()
     }
 
-    calculateTotal(numberSpan, cardImgParam)
+    calculateTotalSub(cardImgParam)
 
   })
 
@@ -173,11 +160,7 @@ function renderCardItem(cardImgParam) {
     numberSpan += i
     spanEl.textContent = numberSpan
 
-    if (numberSpan === 0) {
-      removeCardItem()
-    }
-
-    calculateTotal(numberSpan, cardImgParam)
+    calculateTotalAdd(cardImgParam)
 
   })
 
@@ -218,27 +201,25 @@ function renderStoreItem(imgParam) {
     imgParam.inCard = true
     if (imgParam.inCard === true) {
       renderCardItem(imgParam)
-      calculateTotal(1, imgParam)
+      calculateTotalAdd(imgParam)
     }
 
   })
   
 }
 
-function removeCardItem() {
+function calculateTotalAdd(itemsParam) {
 
-  const liEl = document.querySelector('main ul li')
-  const ulEl = document.querySelector('main ul')
-
-  liEl.innerHTML = ''
+  let price = itemsParam.price
+  totalPrice = totalPrice + price
+  totalEl.textContent = `£${totalPrice.toFixed(2)}`
 
 }
 
-function calculateTotal(changeParam, itemsParam) {
+function calculateTotalSub(itemsParam) {
 
   let price = itemsParam.price
-  let change = changeParam
-  totalPrice = totalPrice + price
+  totalPrice = totalPrice - price
   totalEl.textContent = `£${totalPrice.toFixed(2)}`
 
 }
