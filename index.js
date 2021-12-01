@@ -229,7 +229,11 @@ function renderStoreItem(imgParam) {
     renderCartItem(imgParam)
     calculateTotalAdd(imgParam)
 
-  })
+    // btnEl.addEventListener('click', function() {
+    //   btnEl.removeEventListener("click");
+    // })
+
+  }, { once: true })
   
 }
 
