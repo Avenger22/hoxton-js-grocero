@@ -13,53 +13,93 @@ This is how an item object should look like
 const state = {
 
   items: [
+
     {
-      id: 1,
+      id: 01,
       name: 'beetroot',
       price: 0.97
     },
 
     {
-      id: 2,
+      id: 02,
       name: 'carrot',
       price: 0.75
     },
 
     {
-      id: 3,
+      id: 03,
       name: 'apple',
       price: 0.89
     },
 
     {
-      id: 4,
-      name: 'appricot',
+      id: 04,
+      name: 'apricot',
       price: 0.55
+    },
+
+    {
+      id: 05,
+      name: 'avocado',
+      price: 1.25
+    },
+
+    {
+      id: 06,
+      name: 'bananas',
+      price: 1.57
+    },
+
+    {
+      id: 07,
+      name: 'bell-pepper',
+      price: 2.55
+    },
+
+    {
+      id: 08,
+      name: 'berry',
+      price: 2.90
+    },
+
+    {
+      id: 09,
+      name: 'blueberry',
+      price: 4.50
+    },
+
+    {
+      id: 10,
+      name: 'eggplant',
+      price: 5.75
     }
+
   ],
  
 }
 
-const imgSvg = [
-  '001-beetroot.svg',
-  '002-carrot.svg',
-  '003-apple.svg',
-  '004-apricot.svg',
-  '005-avocado.svg',
-  '006-bananas.svg',
-  '007-bell-pepper.svg',
-  '008-berry.svg',
-  '009-blueberry.svg',
-  '010-eggplant.svg',
-]
+// const imgSvg = [
+//   '001-beetroot.svg',
+//   '002-carrot.svg',
+//   '003-apple.svg',
+//   '004-apricot.svg',
+//   '005-avocado.svg',
+//   '006-bananas.svg',
+//   '007-bell-pepper.svg',
+//   '008-berry.svg',
+//   '009-blueberry.svg',
+//   '010-eggplant.svg',
+// ]
 
-function renderStoreSvg(imgSvgParam) {
-  for (const element of imgSvgParam) {
+function renderStoreSvg(itemsParam) {
+
+  for (const element of itemsParam) {
     renderStoreItem(element)
   }
+
 }
 
-function renderCardItem() {
+function renderCardItem(cardImgParam) {
 
   const ulEl = document.querySelector("main .item-list")
 
@@ -67,7 +107,15 @@ function renderCardItem() {
   
   const imgEl = document.createElement('img')
   imgEl.setAttribute('class', 'cart--item-icon')
-  imgEl.setAttribute('src', 'assets/icons/001-beetroot.svg')
+
+  if (cardImgParam.id === 10) {
+    imgEl.setAttribute('src', `assets/icons/0${cardImgParam.id}-${cardImgParam.name}.svg`)
+  }
+
+  else {
+    imgEl.setAttribute('src', `assets/icons/00${cardImgParam.id}-${cardImgParam.name}.svg`)
+  }
+
   imgEl.setAttribute('alt', 'beetroot')
 
   const pEl = document.createElement('p')
@@ -99,7 +147,14 @@ function renderStoreItem(imgParam) {
   divEl.setAttribute('class', 'store--item-icon')
 
   const imgEl = document.createElement('img')
-  imgEl.setAttribute('src', `assets/icons/${imgParam}`)
+
+  if (imgParam.id === 10) {
+    imgEl.setAttribute('src', `assets/icons/0${imgParam.id}-${imgParam.name}.svg`)
+  }
+
+  else {
+    imgEl.setAttribute('src', `assets/icons/00${imgParam.id}-${imgParam.name}.svg`)
+  }
   imgEl.setAttribute('alt', 'beetroot')
 
   const btnEl = document.createElement('button')
@@ -108,11 +163,19 @@ function renderStoreItem(imgParam) {
   divEl.append(imgEl)
   liEl.append(divEl, btnEl)
   ulEl.append(liEl)
+
+  //event listeners
+  btnEl.addEventListener('click', function(event) {
+
+    event.preventDefault()
+    renderCardItem(imgParam)
+
+  })
   
 }
 
 function render() {
-  renderStoreSvg(imgSvg)
+  renderStoreSvg(state.items)
 }
 
 render()
