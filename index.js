@@ -15,63 +15,73 @@ const state = {
   items: [
 
     {
-      id: 01,
+      id: 1,
       name: 'beetroot',
-      price: 0.97
+      price: 0.97,
+      inCard: false
     },
 
     {
-      id: 02,
+      id: 2,
       name: 'carrot',
-      price: 0.75
+      price: 0.75,
+      inCard: false
     },
 
     {
-      id: 03,
+      id: 3,
       name: 'apple',
-      price: 0.89
+      price: 0.89,
+      inCard: false
     },
 
     {
-      id: 04,
+      id: 4,
       name: 'apricot',
-      price: 0.55
+      price: 0.55,
+      inCard: false
     },
 
     {
-      id: 05,
+      id: 5,
       name: 'avocado',
-      price: 1.25
+      price: 1.25,
+      inCard: false
     },
 
     {
-      id: 06,
+      id: 6,
       name: 'bananas',
-      price: 1.57
+      price: 1.57,
+      inCard: false
     },
 
     {
-      id: 07,
+      id: 7,
       name: 'bell-pepper',
-      price: 2.55
+      price: 2.55,
+      inCard: false
     },
 
     {
-      id: 08,
+      id: 8,
       name: 'berry',
-      price: 2.90
+      price: 2.90,
+      inCard: false
     },
 
     {
-      id: 09,
+      id: 9,
       name: 'blueberry',
-      price: 4.50
+      price: 4.50,
+      inCard: false
     },
 
     {
       id: 10,
       name: 'eggplant',
-      price: 5.75
+      price: 5.75,
+      inCard: false
     }
 
   ],
@@ -104,7 +114,7 @@ function renderCardItem(cardImgParam) {
   const ulEl = document.querySelector("main .item-list")
 
   const liEl = document.createElement('li')
-  
+
   const imgEl = document.createElement('img')
   imgEl.setAttribute('class', 'cart--item-icon')
 
@@ -135,6 +145,39 @@ function renderCardItem(cardImgParam) {
   liEl.append(imgEl, pEl, btnEl1, spanEl, btnEl2)
   ulEl.append(liEl)
 
+  //event listeners butttons
+  btnEl1.addEventListener('click', function(event) {
+
+    event.preventDefault()
+    const i = 1
+    let numberSpan = Number(spanEl.textContent)
+    numberSpan -= i
+    spanEl.textContent = numberSpan
+
+    if (numberSpan === 0) {
+      removeCardItem()
+    }
+
+    // calculateTotal(numberSpan)
+
+  })
+
+  btnEl2.addEventListener('click', function(event) {
+
+    event.preventDefault()
+    const i = 1
+    let numberSpan = Number(spanEl.textContent)
+    numberSpan += i
+    spanEl.textContent = numberSpan
+
+    if (numberSpan === 0) {
+      removeCardItem()
+    }
+
+    // calculateTotal(numberspan)
+
+  })
+
 }
 
 function renderStoreItem(imgParam) {
@@ -155,6 +198,7 @@ function renderStoreItem(imgParam) {
   else {
     imgEl.setAttribute('src', `assets/icons/00${imgParam.id}-${imgParam.name}.svg`)
   }
+
   imgEl.setAttribute('alt', 'beetroot')
 
   const btnEl = document.createElement('button')
@@ -168,10 +212,26 @@ function renderStoreItem(imgParam) {
   btnEl.addEventListener('click', function(event) {
 
     event.preventDefault()
-    renderCardItem(imgParam)
+    imgParam.inCard = true
+    if (imgParam.inCard === true) {
+      renderCardItem(imgParam)
+    }
 
   })
   
+}
+
+function removeCardItem() {
+
+  const liEl = document.querySelector('main ul li')
+  const ulEl = document.querySelector('main ul')
+
+  liEl.innerHTML = ''
+
+}
+
+function calculateTotal(totalParam) {
+
 }
 
 function render() {
