@@ -7,6 +7,7 @@ This is how an item object should look like
 }
 */
 
+//state object, has an array items wich itself has lots of objects inside with 4 properties wich are updated and used in the app
 const state = {
 
   items: [
@@ -90,8 +91,13 @@ let totalEl = document.querySelector('span.total-number')
 let totalPrice = 0
 
 //function to call the renderStoreItem for the header items to fill out in a for with argument an array from state
-function renderStoreSvg(itemsParam) {
+function renderStoreHeader(itemsParam) {
   //just has a for of loop, because i have an array parameter and want to call store header items
+
+  //we get the ul wich i want from header
+  const ulEl = document.querySelector("header .item-list")
+  ulEl.innerHTML = ''
+
   for (const element of itemsParam) {
     renderStoreItem(element)
   }
@@ -134,7 +140,7 @@ function renderCartItem(cardImgParam) {
   //creating span element wich has the value when you change the btn + or -
   const spanEl = document.createElement('span')
   spanEl.setAttribute('class', 'quantity-text center')
-  spanEl.textContent = '1'
+  spanEl.textContent = cardImgParam.inCart
 
   //creating btn2 wich creates this button for +
   const btnEl2 = document.createElement('button')
@@ -149,39 +155,44 @@ function renderCartItem(cardImgParam) {
   btnEl1.addEventListener('click', function(event) {
 
     event.preventDefault()
-    const i = 1
-    let numberSpan = Number(spanEl.textContent)
-    numberSpan -= i
-    spanEl.textContent = numberSpan
+    decreaseItemQuantity(cardImgParam)
 
-    if (numberSpan === 0) {
+    spanEl.textContent = cardImgParam.inCart
+
+    if (cardImgParam.inCart === 0) {
       liEl.remove()
     }
 
-    decreaseItemQuantity(cardImgParam)
     calculateTotalSub(cardImgParam)
+    render()
 
   })
 
   btnEl2.addEventListener('click', function(event) {
 
     event.preventDefault()
-    const i = 1
-    let numberSpan = Number(spanEl.textContent)
-    numberSpan += i
-    spanEl.textContent = numberSpan
-
     increaseItemQuantity(cardImgParam)
+
+    spanEl.textContent = cardImgParam.inCart
+
+    // if (cardImgParam.inCart >= 50) {
+    //   liEl.remove()
+    //   totalEl = 0
+    // }
+
     calculateTotalAdd(cardImgParam)
+    render()
 
   })
 
 }
 
+//this is called when i click the small btn minus in cart item section, and updates the states
 function decreaseItemQuantity(cardParam) {
   cardParam.inCart -= 1
 }
 
+//this is called when i click the small btn plus in cart item section, and updates the states
 function increaseItemQuantity(cardParam) {
   cardParam.inCart += 1
 }
@@ -212,7 +223,7 @@ function renderStoreItem(imgParam) {
     imgEl.setAttribute('src', `assets/icons/00${imgParam.id}-${imgParam.name}.svg`)
   }
 
-  imgEl.setAttribute('alt', `${imgParam.name}`)
+  imgEl.setAttribute('alt', imgParam.name)
 
   //creating a button wich is crucial to this app
   const btnEl = document.createElement('button')
@@ -226,12 +237,13 @@ function renderStoreItem(imgParam) {
   btnEl.addEventListener('click', function(event) {
 
     event.preventDefault()
+
+    increaseItemQuantity(imgParam)
     renderCartItem(imgParam)
+    
     calculateTotalAdd(imgParam)
 
-    // btnEl.addEventListener('click', function() {
-    //   btnEl.removeEventListener("click");
-    // })
+    render()
 
   }, { once: true })
   
@@ -257,7 +269,7 @@ function calculateTotalSub(itemsParam) {
 
 //calls everything, rerenders the page and does all
 function render() {
-  renderStoreSvg(state.items)
+  renderStoreHeader(state.items)
 }
 
 //the only function call in main, then everything renders here with function calls
