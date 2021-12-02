@@ -175,11 +175,6 @@ function renderCartItem(cardImgParam) {
 
     spanEl.textContent = cardImgParam.inCart
 
-    // if (cardImgParam.inCart >= 50) {
-    //   liEl.remove()
-    //   totalEl = 0
-    // }
-
     calculateTotalAdd(cardImgParam)
     render()
 
