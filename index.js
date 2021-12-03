@@ -89,14 +89,15 @@ const state = {
 //global variables wich i use in functions without passing as paraments, or in this case juse for total calculating
 let totalEl = document.querySelector('span.total-number')
 let totalPrice = 0
+const storeUl = document.querySelector("header .item-list")
+const cartUl = document.querySelector("main .item-list")
 
 //function to call the renderStoreItem for the header items to fill out in a for with argument an array from state
-function renderStoreHeader(itemsParam) {
+function renderStore(itemsParam) {
   //just has a for of loop, because i have an array parameter and want to call store header items
 
   //we get the ul wich i want from header
-  const ulEl = document.querySelector("header .item-list")
-  ulEl.innerHTML = ''
+  storeUl.innerHTML = ''
 
   for (const element of itemsParam) {
     renderStoreItem(element)
@@ -104,11 +105,57 @@ function renderStoreHeader(itemsParam) {
 
 }
 
+//this functions calls the above function in the btn eventlistener, and this renders all items in the header part the 10 elements in the store
+function renderStoreItem(imgParam) {
+
+  //creating li
+  const liEl = document.createElement('li')
+  
+  //creating a div
+  const divEl = document.createElement('div')
+  divEl.setAttribute('class', 'store--item-icon')
+
+  //creating an image
+  const imgEl = document.createElement('img')
+
+  //checking that the id 10 should have different src image string
+  if (imgParam.id === 10) {
+    imgEl.setAttribute('src', `assets/icons/0${imgParam.id}-${imgParam.name}.svg`)
+  }
+
+  //for the other from id 1-9 wich has an 00
+  else {
+    imgEl.setAttribute('src', `assets/icons/00${imgParam.id}-${imgParam.name}.svg`)
+  }
+
+  imgEl.setAttribute('alt', imgParam.name)
+
+  //creating a button wich is crucial to this app
+  const btnEl = document.createElement('button')
+  btnEl.textContent = 'Add to cart'
+
+  divEl.append(imgEl)
+  liEl.append(divEl, btnEl)
+  storeUl.append(liEl)
+
+  //event listeners for the add to cart button
+  btnEl.addEventListener('click', function(event) {
+
+    event.preventDefault()
+
+    increaseItemQuantity(imgParam)
+    renderCartItem(imgParam)
+    
+    calculateTotalAdd(imgParam)
+
+    render()
+
+  }, { once: true })
+  
+}
+
 //function to call renderCartItem this is called only when the btn in add to cart in renderStoreItem is clicked, problems here in rerendering
 function renderCartItem(cardImgParam) {
-
-  //creating the ul
-  const ulEl = document.querySelector("main .item-list")
 
   //creating the li
   const liEl = document.createElement('li')
@@ -149,7 +196,7 @@ function renderCartItem(cardImgParam) {
 
   //appending things and ul is created totally
   liEl.append(imgEl, pEl, btnEl1, spanEl, btnEl2)
-  ulEl.append(liEl)
+  cartUl.append(liEl)
 
   //event listeners butttons the 1 and 2 - and +
   btnEl1.addEventListener('click', function(event) {
@@ -192,58 +239,6 @@ function increaseItemQuantity(cardParam) {
   cardParam.inCart += 1
 }
 
-//this functions calls the above function in the btn eventlistener, and this renders all items in the header part the 10 elements in the store
-function renderStoreItem(imgParam) {
-
-  //we get the ul wich i want from header
-  const ulEl = document.querySelector("header .item-list")
-
-  //creating li
-  const liEl = document.createElement('li')
-  
-  //creating a div
-  const divEl = document.createElement('div')
-  divEl.setAttribute('class', 'store--item-icon')
-
-  //creating an image
-  const imgEl = document.createElement('img')
-
-  //checking that the id 10 should have different src image string
-  if (imgParam.id === 10) {
-    imgEl.setAttribute('src', `assets/icons/0${imgParam.id}-${imgParam.name}.svg`)
-  }
-
-  //for the other from id 1-9 wich has an 00
-  else {
-    imgEl.setAttribute('src', `assets/icons/00${imgParam.id}-${imgParam.name}.svg`)
-  }
-
-  imgEl.setAttribute('alt', imgParam.name)
-
-  //creating a button wich is crucial to this app
-  const btnEl = document.createElement('button')
-  btnEl.textContent = 'Add to cart'
-
-  divEl.append(imgEl)
-  liEl.append(divEl, btnEl)
-  ulEl.append(liEl)
-
-  //event listeners for the add to cart button
-  btnEl.addEventListener('click', function(event) {
-
-    event.preventDefault()
-
-    increaseItemQuantity(imgParam)
-    renderCartItem(imgParam)
-    
-    calculateTotalAdd(imgParam)
-
-    render()
-
-  }, { once: true })
-  
-}
-
 //calculates when the small btn + is clicked and is called there in an event dom
 function calculateTotalAdd(itemsParam) {
 
@@ -264,7 +259,7 @@ function calculateTotalSub(itemsParam) {
 
 //calls everything, rerenders the page and does all
 function render() {
-  renderStoreHeader(state.items)
+  renderStore(state.items)
 }
 
 //the only function call in main, then everything renders here with function calls
