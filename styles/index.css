@@ -33,17 +33,42 @@ button {
 
 #store {
   height: 40vh;
-  padding: 1rem;
+  padding: 0.5rem;
+
+  display: grid;
+  grid-template: 
+  "sort-div h1" 0.1fr
+  "sort-div store-items" 0.9fr /
+  0.05fr 0.95fr;
 
   overflow-y: scroll;
 
   background-color: var(--primary-color);
 }
 
+#store .store--sort {
+  grid-area: sort-div;
+  grid-template-rows: 1fr;
+}
+
+.store--sort button {
+  font-size: 12px;
+}
+
+.store--sort .button-wrapper {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  grid-gap: 20px 10px;
+}
+
 #store h1 {
   text-align: center;
+
+  grid-area: h1;
+
   color: white;
   font-family: Lobster, sans-serif;
+  padding-bottom: 30px;
 }
 
 #store button {
@@ -51,13 +76,18 @@ button {
   border: none;
   padding: 0.5rem 1rem;
   background: white;
-
   color: var(--primary-color);
   font-weight: bold;
-
   box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px white;
-
   transition: 0.1s;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -ms-transition: 0.1s;
+  -o-transition: 0.1s;
 }
 
 #store button:hover {
@@ -73,14 +103,15 @@ button {
 .store--item-list {
   display: grid;
   grid-template-columns: repeat(4, 125px);
-  grid-gap: 5rem;
+  grid-gap: 5rem 1.5rem;
   justify-content: center;
+  grid-area: store-items;
 }
 
 .store--item-list li {
   display: grid;
   place-items: center;
-  grid-row-gap: 0.5rem;
+  grid-row-gap: 1rem;
 }
 
 .store--item-icon {
@@ -88,13 +119,13 @@ button {
   height: 125px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 650px) {
   .store--item-list {
     grid-template-columns: repeat(3, 125px);
   }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 550px) {
   .store--item-list {
     grid-template-columns: repeat(2, 125px);
   }
@@ -141,7 +172,7 @@ button {
 
   display: grid;
   grid-template-columns: 24px minmax(150px, 1fr) repeat(3, auto);
-  grid-gap: 0.5rem;
+  grid-gap: 1rem;
   align-items: center;
 
   border-bottom: 1px dotted #000000;
@@ -195,6 +226,11 @@ button {
   text-align: center;
   font-size: 0.75rem;
   font-weight: bold;
+}
+
+.name-span-store {
+  font-size: 16px;
+  color: #fff;
 }
 
 /* Total */
