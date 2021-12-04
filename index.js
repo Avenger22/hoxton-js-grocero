@@ -2,6 +2,7 @@
 let totalEl = document.querySelector('span.total-number')
 const storeUl = document.querySelector("header .item-list")
 const cartUl = document.querySelector("main .item-list")
+const emptyCartBtn = document.querySelector('button.empty-cart-btn')
 
 //state object, has an array items wich itself has lots of objects inside with 4 properties wich are updated and used in the app
 const state = {
@@ -12,6 +13,7 @@ const state = {
       id: 1,
       name: 'beetroot',
       price: 0.97,
+      inStock: 30,
       inCart: 0
     },
 
@@ -19,6 +21,7 @@ const state = {
       id: 2,
       name: 'carrot',
       price: 0.75,
+      inStock: 30,
       inCart: 0
     },
 
@@ -26,6 +29,7 @@ const state = {
       id: 3,
       name: 'apple',
       price: 0.89,
+      inStock: 30,
       inCart: 0
     },
 
@@ -33,6 +37,7 @@ const state = {
       id: 4,
       name: 'apricot',
       price: 0.55,
+      inStock: 30,
       inCart: 0
     },
 
@@ -40,6 +45,7 @@ const state = {
       id: 5,
       name: 'avocado',
       price: 1.25,
+      inStock: 30,
       inCart: 0
     },
 
@@ -47,6 +53,7 @@ const state = {
       id: 6,
       name: 'bananas',
       price: 1.57,
+      inStock: 30,
       inCart: 0
     },
 
@@ -54,6 +61,7 @@ const state = {
       id: 7,
       name: 'bell-pepper',
       price: 2.55,
+      inStock: 30,
       inCart: 0
     },
 
@@ -61,6 +69,7 @@ const state = {
       id: 8,
       name: 'berry',
       price: 2.90,
+      inStock: 30,
       inCart: 0
     },
 
@@ -68,6 +77,7 @@ const state = {
       id: 9,
       name: 'blueberry',
       price: 4.50,
+      inStock: 30,
       inCart: 0
     },
 
@@ -75,6 +85,7 @@ const state = {
       id: 10,
       name: 'eggplant',
       price: 5.75,
+      inStock: 30,
       inCart: 0
     }
 
@@ -82,22 +93,80 @@ const state = {
  
 }
 
-//HELPER FUNCTIONS
+// Questions to answer
 
+// Q: What items are in the store? ✅
+// A: state.items
+
+// Q: What items are in my cart? ✅
+// A: getCartItems()
+
+// Q: How many of each item do I have? ✅
+// A: state.items.inCart
+
+// Q: How much do I have to pay? ✅
+// A: getCalculateTotal()
+
+// Q: How many items are in stock? ✅
+// A: state.items.inStock
+
+//-------------------------------------------HELPER FUNCTIONS---------------------------------------------------------------
+//-------------------------------------------DERIVED STATE------------------------------------------------------------------
+//this is a function in wich when i click a new feature added button the whole cart item get erased by manipulating the STATE
+function emptyCartBtnEvent() {
+
+  for (const element of state.items) {
+    const saveCartQuantity = element.inCart
+    element.inCart = 0
+    element.inStock += saveCartQuantity
+  }
+
+}
+
+function listenToEmptyCartBtn() {
+
+  emptyCartBtn.addEventListener('click', function () {
+
+    emptyCartBtnEvent()
+    render()
+
+  })
+
+}
+
+//the key function to make rendering work as it should
 function getCartItems(cartItemParam) {
-  return state.items.filter(item => item.inCart > 0)
+
+  return state.items.filter(item => item.inCart > 0) //filter is a method for ARRAYS to filter and create a new ARRAY
+
+  /* arrow function function (item) {
+    return item.inCart > 0
+  } 
+  */
+
 }
 
 //this is called when i click the small btn minus in cart item section, and updates the states
 function decreaseItemQuantity(cardParam) {
-  cardParam.inCart--
+
+  if (cardParam.inCart > 0) {
+    cardParam.inCart--
+    cardParam.inStock++
+  }
+
 }
 
 //this is called when i click the small btn plus in cart item section, and updates the states
 function increaseItemQuantity(cardParam) {
-  cardParam.inCart++
+
+  if (cardParam.inStock > 0) {
+    cardParam.inStock--
+    cardParam.inCart++
+  }
+
 }
 
+//this function calculates the total and rerenders when state changes
 function calculateTotal() {
 
   let total = 0
@@ -112,8 +181,15 @@ function calculateTotal() {
 
 }
 
-// RENDER FUNCTIONS
+//this function crucial to make the x button feature work
+function removeItemFromStore(removeParam) {
 
+  const updatedStore = state.items.filter(storeParam => storeParam.id !== removeParam.id)
+  state.items = updatedStore
+
+}
+
+//----------------------------------------RENDER FUNCTIONS------------------------------------------------------------------------
 //function to call the renderStoreItem for the header items to fill out in a for with argument an array from state
 function renderStore(itemsParam) {
 
@@ -139,6 +215,18 @@ function renderStoreItem(storeParam) {
   const divEl = document.createElement('div')
   divEl.setAttribute('class', 'store--item-icon')
 
+  //creating a btn with x to remove el from store
+  const removeBtnEl = document.createElement('button')
+  removeBtnEl.textContent = 'X'
+  removeBtnEl.addEventListener('click', function(event) {
+
+    event.preventDefault()
+
+    removeItemFromStore(storeParam)
+    render()
+
+  })
+  
   //creating an image
   const imgEl = document.createElement('img')
 
@@ -158,8 +246,19 @@ function renderStoreItem(storeParam) {
   const btnEl = document.createElement('button')
   btnEl.textContent = 'Add to cart'
 
+  //creating span to show me the item if is in stock and how many
+  const stockSpanEl = document.createElement('span')
+  stockSpanEl.setAttribute('class', 'stock-span-store')
+  stockSpanEl.textContent = `The stock: ${storeParam.inStock}`
+
+  //creating span to show me the item price
+  const priceSpanEl = document.createElement('span')
+  priceSpanEl.setAttribute('class', 'price-span-store')
+  priceSpanEl.textContent = `The price: ${storeParam.price}`
+
+  //appending in order
   divEl.append(imgEl)
-  liEl.append(divEl, btnEl)
+  liEl.append(removeBtnEl, divEl, btnEl, stockSpanEl, priceSpanEl)
   storeUl.append(liEl)
 
   //event listeners for the add to cart button
@@ -173,7 +272,7 @@ function renderStoreItem(storeParam) {
     render()
 
   })
-  
+
 }
 
 //this function render the cart in the main html
@@ -283,6 +382,14 @@ function render() {
 
 }
 
+// change state >>> rerender
+function init() {
+
+  render()
+  listenToEmptyCartBtn()
+
+}
+
 //FUNCTION CALL
 //the only function call in main, then everything renders here with function calls
-render()
+init()
