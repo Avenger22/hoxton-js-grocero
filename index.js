@@ -27,99 +27,100 @@ const filterTypeEggPlant = document.querySelector('button.store--btn-sort-filter
 //state object, has an array items wich itself has lots of objects inside with 4 properties wich are updated and used in the app
 const state = {
 
-  items: [
+  //commented because i load them from server now
+  // items: [
 
-    {
-      id: 1,
-      name: 'beetroot',
-      price: 6.78,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 1,
+  //     name: 'beetroot',
+  //     price: 6.78,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 2,
-      name: 'carrot',
-      price: 0.75,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 2,
+  //     name: 'carrot',
+  //     price: 0.75,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 3,
-      name: 'apple',
-      price: 0.55,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 3,
+  //     name: 'apple',
+  //     price: 0.55,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 4,
-      name: 'apricot',
-      price: 0.25,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 4,
+  //     name: 'apricot',
+  //     price: 0.25,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 5,
-      name: 'avocado',
-      price: 1.25,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 5,
+  //     name: 'avocado',
+  //     price: 1.25,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 6,
-      name: 'bananas',
-      price: 1.70,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 6,
+  //     name: 'bananas',
+  //     price: 1.70,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 7,
-      name: 'bell-pepper',
-      price: 7.55,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 7,
+  //     name: 'bell-pepper',
+  //     price: 7.55,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 8,
-      name: 'berry',
-      price: 9.90,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 8,
+  //     name: 'berry',
+  //     price: 9.90,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 9,
-      name: 'blueberry',
-      price: 4.50,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    },
+  //   {
+  //     id: 9,
+  //     name: 'blueberry',
+  //     price: 4.50,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   },
 
-    {
-      id: 10,
-      name: 'eggplant',
-      price: 5.75,
-      inStock: 30,
-      inCart: 0,
-      filterOnly: false
-    }
+  //   {
+  //     id: 10,
+  //     name: 'eggplant',
+  //     price: 5.75,
+  //     inStock: 30,
+  //     inCart: 0,
+  //     filterOnly: false
+  //   }
 
-  ],
+  // ],
 
   priceOrderBy: [], //this will have objects from items in state ordered by price in rerendering etc feature works
   alphabetOrderBy: [], //the same as above
@@ -130,8 +131,10 @@ const state = {
  
 }
 
-state.priceOrderBy.push(...state.items); //now both are the same spread operator copy array
-state.alphabetOrderBy.push(...state.items); //now both are the same spread operator copy array
+// function pushToOtherArrays() {
+//   state.priceOrderBy.push(...state.items); //now both are the same spread operator copy array
+//   state.alphabetOrderBy.push(...state.items); //now both are the same spread operator copy array
+// }
 
 //------------------------------------------------END OF STATE OBJECT------------------------------------------------------------------
 
@@ -139,7 +142,12 @@ state.alphabetOrderBy.push(...state.items); //now both are the same spread opera
 //------------------------------------------SERVER FUNCTIONS--------------------------------------------------------------
 
 function getStateDataFromServer() {
-  
+
+  return fetch('http://localhost:3000/items').then(function (response) 
+    {
+        return response.json()
+    })
+
 }
 
 //-------------------------------------------END OF SERVER FUNCTIONS----------------------------------------------------------
@@ -719,6 +727,7 @@ function init() {
 
   render()
   listenToEmptyCartBtn()
+  // pushToOtherArrays()
   getEventListenerBtnSortPrice()
   getEventListenerRevertBackOrder()
   getEventListenerBtnSortAlphabet()
@@ -728,8 +737,16 @@ function init() {
 
 //----------------------------------------------------END OF RENDER FUNCTIONS------------------------------------------------------
 
+//crucial to get data from json server rest api then to load them in state object those wich i need, now all is in server
+getStateDataFromServer().then(function (itemsFromServer) {
+  state.items = itemsFromServer
+  state.priceOrderBy.push(...state.items); //now both are the same spread operator copy array
+  state.alphabetOrderBy.push(...state.items); //now both are the same spread operator copy array
+  init() // no need to call it this basically starts the code running
+})
+
 
 //----------------------------------------------------FUNCTION CALL------------------------------------------------------------------
 
 //the only function call in main, then everything renders here with function calls
-init()
+// init()
