@@ -1,3 +1,4 @@
+//--------------------------------------------------GLOBAL VARIABLES AND ELEMENTS---------------------------------------------
 //global variables wich i use in functions without passing as paraments, or in this case juse for total calculating
 let totalEl = document.querySelector('span.total-number')
 const storeUl = document.querySelector("header .item-list")
@@ -6,7 +7,6 @@ const emptyCartBtn = document.querySelector('button.empty-cart-btn')
 const sortPriceBtn = document.querySelector('button.store--btn-sort-price')
 const sortAlphabetBtn = document.querySelector('button.store--btn-sort-alphabet')
 const sortPriceBtnRemove = document.querySelector('button.store--btn-sort-price-remove')
-
 //global variables button to filter by type
 const filterTypeApricot = document.querySelector('button.store--btn-sort-filter-10')
 const filterTypeBeetroot = document.querySelector('button.store--btn-sort-filter-1')
@@ -18,8 +18,11 @@ const filterTypeBellPepper = document.querySelector('button.store--btn-sort-filt
 const filterTypeBerry = document.querySelector('button.store--btn-sort-filter-7')
 const filterTypeBlueBerry = document.querySelector('button.store--btn-sort-filter-8')
 const filterTypeEggPlant = document.querySelector('button.store--btn-sort-filter-9')
-
 // const filterAllBtn = document.querySelectorAll('button.store--btn-sort-filter')
+//----------------------------------------------END OF GLOBAL VARIABLES-----------------------------------------------------------
+
+
+//----------------------------------------------START OF STATE OBJECT--------------------------------------------------------------
 
 //state object, has an array items wich itself has lots of objects inside with 4 properties wich are updated and used in the app
 const state = {
@@ -126,9 +129,43 @@ const state = {
   filter: false
  
 }
- 
+
 state.priceOrderBy.push(...state.items); //now both are the same spread operator copy array
 state.alphabetOrderBy.push(...state.items); //now both are the same spread operator copy array
+
+//------------------------------------------------END OF STATE OBJECT------------------------------------------------------------------
+
+
+//------------------------------------------SERVER FUNCTIONS--------------------------------------------------------------
+
+function getStateDataFromServer() {
+  
+}
+
+//-------------------------------------------END OF SERVER FUNCTIONS----------------------------------------------------------
+
+/* const priceOrderDescending = state.items.sort((b, a) => (b.price > a.price) ? 1 : (b.price === a.price) ? ((b.name > a.name) ? 1 : -1) : -1 )
+ console.log(priceOrderDescending)
+
+ Questions to answer
+
+ Q: What items are in the store? ✅
+ A: state.items
+
+ Q: What items are in my cart? ✅
+ A: getCartItems()
+
+ Q: How many of each item do I have? ✅
+ A: state.items.inCart
+
+ Q: How much do I have to pay? ✅
+ A: getCalculateTotal()
+
+ Q: How many items are in stock? ✅
+ A: state.items.inStock */
+
+
+//-------------------------------------------HELPER FUNCTIONS DERIVED STATE---------------------------------------------------------------
 
 //function that sorts by alphabet uses state.alphabetOrderBy
 function sortByAlphabet() {
@@ -158,28 +195,6 @@ function getEventListenerBtnSortAlphabet() {
 
 }
 
-// const priceOrderDescending = state.items.sort((b, a) => (b.price > a.price) ? 1 : (b.price === a.price) ? ((b.name > a.name) ? 1 : -1) : -1 )
-// console.log(priceOrderDescending)
-
-// Questions to answer
-
-// Q: What items are in the store? ✅
-// A: state.items
-
-// Q: What items are in my cart? ✅
-// A: getCartItems()
-
-// Q: How many of each item do I have? ✅
-// A: state.items.inCart
-
-// Q: How much do I have to pay? ✅
-// A: getCalculateTotal()
-
-// Q: How many items are in stock? ✅
-// A: state.items.inStock
-
-//-------------------------------------------HELPER FUNCTIONS---------------------------------------------------------------
-//-------------------------------------------DERIVED STATE------------------------------------------------------------------
 //this function gets the ordered array in the state
 function getOrderedStore() {
 
@@ -474,7 +489,11 @@ function removeItemFromStore(removeParam) {
 
 }
 
+//-----------------------------------------END OF HELPER FUNCTIONS------------------------------------------------------
+
+
 //----------------------------------------RENDER FUNCTIONS------------------------------------------------------------------------
+
 //function to call the renderStoreItem for the header items to fill out in a for with argument an array from state
 function renderStore(itemsParam, priceParam, alphabetParam) {
 
@@ -707,6 +726,10 @@ function init() {
 
 }
 
-//FUNCTION CALL
+//----------------------------------------------------END OF RENDER FUNCTIONS------------------------------------------------------
+
+
+//----------------------------------------------------FUNCTION CALL------------------------------------------------------------------
+
 //the only function call in main, then everything renders here with function calls
 init()
